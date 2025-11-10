@@ -15,8 +15,7 @@ app = FastAPI(
     description="AI-powered advisory system for apple orchard management",
     version="1.0.0"
 )
-
-# CORS Configuration
+ 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"], 
@@ -53,15 +52,7 @@ class SensorDataResponse(BaseModel):
 @app.get("/")
 async def root():
     """Root endpoint"""
-    return {
-        "message": "Apple Orchard AI Agent API",
-        "version": "1.0.0",
-        "endpoints": {
-            "chat": "/api/chat",
-            "sensor_data": "/api/sensor-data/{device_id}",
-            "health": "/health"
-        }
-    }
+    return "Hello Uptime Robot!"
 
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat_with_agent(request: ChatRequest):
