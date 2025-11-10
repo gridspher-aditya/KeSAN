@@ -1,5 +1,6 @@
 # main.py
 from fastapi import FastAPI, HTTPException, Depends
+from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from typing import Optional, List
@@ -49,10 +50,17 @@ class SensorDataResponse(BaseModel):
 #                           ENDPOINTS
 # ═══════════════════════════════════════════════════════════════
 
-@app.get("/")
-async def root():
-    """Root endpoint"""
-    return "Hello Uptime Robot!"
+@app.get("/", response_class=HTMLResponse)
+async def simple_html_response():
+    # Define your simple HTML content as a string
+    html_content = """
+    <html>
+        <body>
+            <h1>Hello, UpTimeRobot!</h1>
+        </body>
+    </html>
+    """
+    return HTMLResponse(content=html_content, status_code=200)
 
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat_with_agent(request: ChatRequest):
