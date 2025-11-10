@@ -15,8 +15,7 @@ app = FastAPI(
     description="AI-powered advisory system for apple orchard management",
     version="1.0.0"
 )
-
-# CORS Configuration
+ 
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"], 
