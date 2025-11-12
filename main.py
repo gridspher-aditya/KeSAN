@@ -89,37 +89,6 @@ async def chat_with_agent(request: ChatRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Agent error: {str(e)}")
 
-@app.get("/api/sensor-data/{device_id}", response_model=SensorDataResponse)
-async def get_sensor_data(device_id: str, limit: int = 10):
-    """
-    Fetch raw sensor data for dashboard visualization
-    """
-    try:
-        url = f"https://gridsphere.in/dapi/?d_id={device_id}"
-        response = requests.get(url, timeout=10)
-        response.raise_for_status()
-        
-        data = response.json()
-        readings = data.get("readings", [])
-        
-        return SensorDataResponse(
-            device_id=device_id,
-            readings=readings[:limit],
-            total_readings=len(readings)
-        )
-        
-    except requests.exceptions.RequestException as e:
-        raise HTTPException(status_code=500, detail=f"Failed to fetch sensor data: {str(e)}")
-
-@app.get("/health")
-async def health_check():
-    """Health check endpoint"""
-    return {
-        "status": "healthy",
-        "api_connection": "active",
-        "anthropic_api": "configured" if os.getenv("ANTHROPIC_API_KEY") else "missing"
-    }
-
 # ═══════════════════════════════════════════════════════════════
 #                         RUN THE APP
 # ═══════════════════════════════════════════════════════════════

@@ -61,7 +61,7 @@ Respond with ONLY the advisor name (e.g., "irrigation_advisor"), nothing else.""
                       "fertilizer_pesticide", "general_advisor", "off_topic"]
     
     if advisor not in valid_advisors:
-        advisor = "general_advisor"  # Default fallback
+        advisor = "general_advisor"
     
     state["current_advisor"] = advisor
     state["next_action"] = advisor
@@ -69,10 +69,9 @@ Respond with ONLY the advisor name (e.g., "irrigation_advisor"), nothing else.""
     return state
 
 # ═══════════════════════════════════════════════════════════════
-#                  ADVISOR NODES (Updated)
+#                  ADVISOR NODES
 # ═══════════════════════════════════════════════════════════════
 
-# --- REMOVED get_data_footer function ---
 
 def data_analyzer_node(state: AgentState) -> AgentState:
     """
@@ -81,11 +80,11 @@ def data_analyzer_node(state: AgentState) -> AgentState:
     sensor_data = fetch_farm_sensor_data.invoke({"device_id": state["device_id"], "limit": 5})
     state["sensor_data"] = sensor_data
     
-    # --- MODIFIED PROMPT (footer removed) ---
+    
     system_prompt = f"""You are a data analyst. You MUST follow these rules:
 1. Use limited, relevant emojis (like 🌡️, 💧).
 2. NEVER use markdown or any symbols like *, -, or #.
-3. Answer in English, Hindi or Hinglish.
+3. Answer in Same language which the farmer used.
 4. Always add time and date of when was data recorded.
 
 Here is the sensor data:
@@ -115,7 +114,7 @@ def irrigation_advisor_node(state: AgentState) -> AgentState:
     system_prompt = f"""You are an irrigation advisor. You MUST follow these rules:
 1. Use limited, relevant emojis (like 💧, ☀️).
 2. NEVER use markdown or any symbols like *, -, or #.
-3. Answer in English, Hindi or Hinglish.
+3. Answer in Same language which the farmer used.
 4. Always add time and date of when was data recorded.
 
 Here is the sensor data:
@@ -144,7 +143,7 @@ def risk_advisor_node(state: AgentState) -> AgentState:
     system_prompt = f"""You are a risk advisor. You MUST follow these rules:
 1. Use limited, relevant emojis (like 🦠, 🐛).
 2. NEVER use markdown or any symbols like *, -, or #.
-3. Answer in English, Hindi or Hinglish.
+3. Answer in Same language which the farmer used.
 4. Always add time and date of when was data recorded.
 
 Here is the sensor data:
@@ -174,7 +173,7 @@ def fertilizer_pesticide_node(state: AgentState) -> AgentState:
     system_prompt = f"""You are an agronomist. You MUST follow these rules:
 1. Use limited, relevant emojis (like 🌿).
 2. NEVER use markdown or any symbols like *, -, or #.
-3. Answer in English, Hindi or Hinglish.
+3. Answer in Same language which the farmer used.
 4. Always add time and date of when was data recorded.
 
 Here is the sensor data:
@@ -201,8 +200,7 @@ def general_advisor_node(state: AgentState) -> AgentState:
     system_prompt = f"""You are a general farm advisor. You MUST follow these rules:
 1. Use limited, relevant emojis.
 2. NEVER use markdown or any symbols like *, -, or #.
-3. Answer in English, Hindi or Hinglish.
-4. Always add time and date of when was data recorded.
+3. Answer in Same language which the farmer used.
 
 Answer the farmer's question simply."""
     
